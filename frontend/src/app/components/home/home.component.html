@@ -1,0 +1,13 @@
+<h1>This will be the home page where we'll see the pool logs</h1>
+
+<mat-toolbar color="primary" class="app-header">
+    <span class="nav-tool-items">
+      <a mat-button mat-raised-button routerLink="http://localhost:4200/registration" routerLinkActive="active">Sign up</a>
+      <a mat-button mat-raised-button routerLink="http://localhost:4200/login" routerLinkActive="active">Sign in</a>
+    </span>
+  </mat-toolbar>
+
+<mat-list dense>
+    <mat-list-item *ngFor="let poollog of poollogs">Comment: {{poollog.comment}} Date: {{poollog.date}} Water temperature{{poollog.waterTemp}} "</mat-list-item>
+</mat-list>
+
