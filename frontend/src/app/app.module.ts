@@ -33,6 +33,13 @@ import { MatToolbarModule,
          MatSelectModule,
          MatOptionModule} from '@angular/material';
 
+// Prime ng 
+import {AccordionModule} from 'primeng/accordion';
+import {ButtonModule} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+
+
+
 
 
 @NgModule({
@@ -69,7 +76,13 @@ import { MatToolbarModule,
     MatSlideToggleModule,
     MatSelectModule,
     MatOptionModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+
+    //prime ng
+    AccordionModule,
+    ButtonModule,
+    TableModule
+
   ],
   providers: [{ 
         provide: HTTP_INTERCEPTORS,

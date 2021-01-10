@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { PoolLogsService } from 'src/app/services/pool-logs.service';
 import { PoolLog } from '../../models/pool-log';
 
+
+
+// Prime ng style
+import {MenuItem} from 'primeng/api';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,6 +17,7 @@ import { PoolLog } from '../../models/pool-log';
 export class HomeComponent implements OnInit {
 
   poollogs: PoolLog[];
+  displayedColumns: string[] = ['date', 'phValue', 'comment', 'backflushInterval','chlorineValue', 'waterTemp', 'airTemp'];
   constructor(private poolLogsService: PoolLogsService, private router : Router) {
     poolLogsService.getPoolLogs().subscribe((response : any) =>{
 

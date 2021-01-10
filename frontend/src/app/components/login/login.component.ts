@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage: String = '';
   
 
-  constructor(private loginService : LoginService, private tokenStorage: TokenStorageService) { }
+  constructor(private loginService : LoginService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
 
         if(response.statusCode === 200){
             this.tokenStorage.saveToken(response.token);
+            this.router.navigate(['/home']);
         }
         
     });

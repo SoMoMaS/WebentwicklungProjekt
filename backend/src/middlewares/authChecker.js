@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
 
     // Verifying jwt token
-    const decoded = jwt.verify(token, jwtKey.jwtPrivateKey, (err) =>{
+    jwt.verify(token, jwtKey.jwtPrivateKey, (err) =>{
         if (err) {
             return res.json({
                 message: "Authorization failed.",
