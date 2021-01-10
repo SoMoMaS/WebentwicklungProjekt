@@ -27,6 +27,8 @@ export class AuthentificationHelperInterceptor implements HttpInterceptor {
     // Adding token to the header
     if(token != null){
         request = request.clone({ headers: request.headers.set(tokenHeader, token) });
+
+        console.log(request.headers);
     }
 
     return next.handle(request);

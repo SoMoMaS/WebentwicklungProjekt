@@ -1,15 +1,27 @@
 const jwt = require('jsonwebtoken');
-const jwtKey = require('../jwt.json')
+const jwtKey = require('../jwtSettings.json')
 
 module.exports = (req, res, next) => {
+
+
+    console.log('Got into verifying the request header.');
+
+    let token = req.headers['x-access-token'];
+
+
     // Verifying jwt token
-    const decoded = jwt.verify(req.body.token, jwtKey.jwtPrivateKey, (err) =>{
+    const decoded = jwt.verify(token, jwtKey.jwtPrivateKey, (err) =>{
         if (err) {
-            return res.json({message: "Authorization failed."}).status(401).send();
+            return res.json({
+                message: "Authorization failed.",
+                statusCode: 401
+            }).status(401).send();
+        }
+        else{
+            //req.userData = decoded
+            next();
         }
     });
 
-    req.userData = decoded
-
-    next();
+   
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage: String = '';
   
 
-  constructor(private loginService : LoginService) { }
+  constructor(private loginService : LoginService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
   }
@@ -29,7 +30,12 @@ export class LoginComponent implements OnInit {
     var password = this.loginData.password
 
     return this.loginService.login({username , password}).subscribe((response: any) =>{
-        console.log(response);
+        console.log(response.statusCode);
+        console.log(response.message);
+
+        if(response.statusCode === 200){
+            this.tokenStorage.saveToken(response.token);
+        }
         
     });
   }

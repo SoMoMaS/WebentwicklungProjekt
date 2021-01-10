@@ -3,7 +3,7 @@ const express = require('express');
 const rethink = require('rethinkdb');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwtKey = require('../jwt.json')
+const jwtKey = require('../jwtSettings.json')
 
 let router = express.Router();
 
@@ -70,7 +70,6 @@ function userExistenceDetection(req, res, username, next){
             console.log(err);
             res.status(400).send();
         }
-        console.log(exist);
         if (exist) {
             next.avaliable = true;
             return true;
@@ -94,13 +93,18 @@ function loginDataCheck(req, res, next){
     .run(req.app._rdbConn, function(err, user){
         if (err) {
             console.log(err);
-            res.json({message: 'Error occured in the db query'}).status(400).send();
+            res.json({
+                message: 'Error occured in the db query',
+                statusCode: 400
+            }).status(400).send();
             return;
         }
 
         // User doesnt exist
         if (!user) {
-            res.json({message: 'User doenst exist in the db.'}).status(400).send();
+            res.json({message: 'User doenst exist in the db.',
+            statusCode: 400
+        }).status(400).send();
             return;
         }
         else{
@@ -112,7 +116,10 @@ function loginDataCheck(req, res, next){
     bcrypt.compare(password, hashedPW, (err, areSame) =>{
         if (err) {
             console.log(err);
-            res.json({message: 'Incorrect username or password, please try again.'}).status(400).send();
+            res.json({
+                message: 'Incorrect username or password, please try again.',
+                statusCode: 400
+            }).status(400).send();
             return;
         }
         if (areSame) {
@@ -125,7 +132,8 @@ function loginDataCheck(req, res, next){
             })
             res.json({
                 message: 'Correct username and password.',
-                token: token
+                token: token,
+                statusCode: 200
             }).status(200).send();
             return;
         }

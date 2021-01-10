@@ -12,10 +12,8 @@ const saltrounds = 10;
             console.log(err)
         }
 
-        console.log(encrypted);
         hashedPW = encrypted;
     });
-    console.log(hashedPW);
     return hashedPW;
 }
 

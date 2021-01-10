@@ -13,7 +13,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
 
-import { AuthentificationHelper } from './helpers/authentification-helper.interceptor';
+import { AuthentificationHelperInterceptor } from './helpers/authentification-helper.interceptor';
+//import * as  AuthentificationHelper from './helpers/authentification-helper.interceptor';
 
 // Style imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -71,10 +72,11 @@ import { MatToolbarModule,
     MatProgressSpinnerModule
   ],
   providers: [{ 
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthentificationHelper, 
-      multi: true}
-    ]
-  //bootstrap: [AppComponent],
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthentificationHelperInterceptor, 
+        multi: true
+      }
+    ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

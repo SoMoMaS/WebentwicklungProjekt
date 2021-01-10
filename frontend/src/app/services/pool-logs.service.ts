@@ -14,7 +14,6 @@ export class PoolLogsService {
   }
 
   getPoolLogs(){
-    console.log('Got into the pool log service');
     return this.webRequestService.get('poollogs');
   }
 
