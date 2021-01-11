@@ -4,6 +4,7 @@ const rethink = require('rethinkdb');
 const bcrypt = require('bcrypt');
 const passwordHelper = require('../services/passwordHelper');
 const authChecker = require('../middlewares/authChecker');
+const bcryptSettings = require('../bcryptSettings.json');
 let router = express.Router();
 
 function users(){
@@ -13,30 +14,91 @@ function users(){
 
 // /users/:id updating user data
     router
-    .route('/:id', authChecker)
+    .route('/:userID')
     .put((req, res, next) =>{
-        updateUserByID(req, res, next, "7c4845d9-96da-499b-a4ca-92da2976626b");
-     })
+        updateUserByID(req, res, next, req.body.uniqID);
+    }) 
+
+    router
+    .route('/', authChecker)
+    .get((req, res, next) =>{
+    listUsers(req, res, next);
+    })
+ 
 
 function updateUserByID(req, res, next, id){
 
-    rethink
-    .table('users')
-    .get(id)
-    .update(
-        {
-            username: req.body.username,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-        },)
-    .run(req.app._rdbConn, (err, result ) => {
+    let plainPW = req.body.password;
+    bcrypt.hash(plainPW, bcryptSettings.saltRounds, (err, password) =>{
         if (err) {
-            res.status(400).send();
+            console.log(err);
         }
 
-        // update was successful
-        res.json('Update was successful');
+       
+
+        console.log('new pw: ');
+        console.log(password);
+
+        console.log('new firstname: ');
+        console.log(req.body.firstName);
+
+        console.log('new lastName: ');
+        console.log(req.body.lastName);
+
+        rethink
+        .table('users')
+        .filter({uniqID :  id})
+        .update(
+            {   //username: req.body.username,
+                password: password,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName
+            })
+        .run(req.app._rdbConn, (err, result ) => {
+            if (err) {
+                res.status(400).send();
+            }
+            else{
+                console.log(result);
+                // update was successful
+                res.status(200).json({
+                    message: 'Update was successful',
+                    user: result,
+                    statusCode: 200,
+                }).send();
+            }
+
+           
+    });
+
+
+
+
+
+    })
+    
+}
+
+function listUsers(req, res , next) {
+    rethink
+    .table('users' )
+    // .orderBy({index: 'createdAt'})
+    .run(req.app._rdbConn, (err, cursor) => {
+        if(err) {
+            return next(err);
+        }
+        
+        //Retrieve all the pool logs in an array.
+        cursor.toArray(function(err, result) {
+            if(err) {
+                return next(err);
+            }
+
+            return res.json({
+                users: result,
+                statusCode: 200 
+            });
+        });
     });
 }
 

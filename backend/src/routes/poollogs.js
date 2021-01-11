@@ -22,7 +22,7 @@ router.get('/', authChecker, (req, res, next) =>{
    listPoolPosts(req, res, next);
 })
 
-router.post('/', authChecker, (req, res, next) =>{
+router.post('/', authChecker,  (req, res, next) =>{
            createPoolLog(req, res, next);
 })
 

@@ -30,11 +30,11 @@ export class LoginComponent implements OnInit {
     var password = this.loginData.password
 
     return this.loginService.login({username , password}).subscribe((response: any) =>{
-        console.log(response.statusCode);
-        console.log(response.message);
+        console.log(response);
 
         if(response.statusCode === 200){
             this.tokenStorage.saveToken(response.token);
+            this.tokenStorage.saveUser(response.uniqID);
             this.router.navigate(['/home']);
         }
         

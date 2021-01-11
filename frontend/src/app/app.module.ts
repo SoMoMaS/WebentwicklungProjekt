@@ -12,6 +12,7 @@ import { AboutComponent } from './components/about/about.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
+import { CreatelogComponent } from './components/createlog/createlog.component';
 
 import { AuthentificationHelperInterceptor } from './helpers/authentification-helper.interceptor';
 //import * as  AuthentificationHelper from './helpers/authentification-helper.interceptor';
@@ -19,7 +20,9 @@ import { AuthentificationHelperInterceptor } from './helpers/authentification-he
 // Style imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
 
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatToolbarModule,
          MatMenuModule,
          MatIconModule,
@@ -31,12 +34,11 @@ import { MatToolbarModule,
          MatCardModule,
          MatSlideToggleModule,
          MatSelectModule,
-         MatOptionModule} from '@angular/material';
+         MatOptionModule,
+         MatNativeDateModule} from '@angular/material';
+import { ProfileComponent } from './components/profile/profile.component';
 
-// Prime ng 
-import {AccordionModule} from 'primeng/accordion';
-import {ButtonModule} from 'primeng/button';
-import {TableModule} from 'primeng/table';
+
 
 
 
@@ -51,6 +53,8 @@ import {TableModule} from 'primeng/table';
     NotFoundComponent,
     RegistrationComponent,
     HomeComponent,
+    CreatelogComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -77,11 +81,10 @@ import {TableModule} from 'primeng/table';
     MatSelectModule,
     MatOptionModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule 
 
-    //prime ng
-    AccordionModule,
-    ButtonModule,
-    TableModule
 
   ],
   providers: [{ 

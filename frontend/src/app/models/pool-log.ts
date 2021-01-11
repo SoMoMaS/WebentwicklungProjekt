@@ -1,12 +1,28 @@
 export class PoolLog {
 
-    constructor(private date : string, 
-                private phValue : number, 
-                private comment : string, 
-                private backflushInterval: number, 
-                private chlorineValue : number, 
-                private waterTemp : number, 
-                private airTemp: number)
-                {
+
+    date : any;
+    phValue : number;
+    comment : string;
+    backflushInterval: number;
+    chlorineValue : number;
+    waterTemp : number;
+    airTemp: number;
+    constructor( date : Date, 
+                 phValue : number, 
+                 comment : string, 
+                 backflushInterval: number, 
+                 chlorineValue : number, 
+                 waterTemp : number, 
+                 airTemp: number){
+
+                    
+            this.date = date.toLocaleDateString();
+            this.phValue = phValue;
+            this.comment = comment;
+            this.backflushInterval = backflushInterval;
+            this.chlorineValue = chlorineValue;
+            this.waterTemp = waterTemp;
+            this.airTemp = airTemp;
     }
 }

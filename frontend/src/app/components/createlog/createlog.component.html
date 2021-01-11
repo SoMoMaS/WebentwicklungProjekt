@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>Create pool log</h1>
+<div mat-dialog-content class="CreateLog">
+  <p>Plese fill out the fields</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Date</mat-label>
+    <!-- Date -->
+    <input matInput [matDatepicker]="picker" [(ngModel)]="data.date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+    <!-- ph Value -->
+   <mat-form-field class="example-full-width">
+    <mat-label>Ph value</mat-label>
+    <textarea matInput [(ngModel)]="data.phValue" ></textarea>
+  </mat-form-field>
+
+   <!-- Comment -->
+   <mat-form-field class="example-full-width">
+    <mat-label>Comment</mat-label>
+    <textarea matInput [(ngModel)]="data.comment" ></textarea>
+  </mat-form-field>
+
+   <!-- Backwash duration -->
+   <mat-form-field class="example-full-width">
+    <mat-label>	Backwash duration</mat-label>
+    <textarea matInput [(ngModel)]="data.backflushInterval" ></textarea>
+  </mat-form-field>
+
+   <!-- Chlorine value -->
+   <mat-form-field class="example-full-width">
+    <mat-label>	Chlorine value </mat-label>
+    <textarea matInput [(ngModel)]="data.chlorineValue" ></textarea>
+  </mat-form-field>
+
+   <!-- Water temperature -->
+   <mat-form-field class="example-full-width">
+    <mat-label>	 Water temperature</mat-label>
+    <textarea matInput [(ngModel)]="data.waterTemp" ></textarea>
+  </mat-form-field>
+
+   <!-- Air temperature -->
+   <mat-form-field class="example-full-width">
+    <mat-label>	Air temperature</mat-label>
+    <textarea matInput [(ngModel)]="data.airTemp" ></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCloseTabButttonClick()">Exit</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Create</button>
+</div>
+

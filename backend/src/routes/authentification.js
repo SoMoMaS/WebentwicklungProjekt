@@ -3,7 +3,8 @@ const express = require('express');
 const rethink = require('rethinkdb');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwtKey = require('../jwtSettings.json')
+const jwtKey = require('../jwtSettings.json');
+const bcryptSettings = require('../bcryptSettings.json');
 
 let router = express.Router();
 
@@ -32,16 +33,19 @@ function createUser(req, res, next){
     userExistenceDetection(req, res, req.body.username, next);
     var plainPW = req.body.password;
         // Hasing plain pw.
-        console.log(next.avaliable);
-        bcrypt.hash(plainPW, 10, (err, password) =>{
+        bcrypt.hash(plainPW, bcryptSettings.saltRounds, (err, password) =>{
             if(next.avaliable){
                 console.log('Username doesnt exist, creating new user...')
         
                 // Setting the username and the hashed password.
                 username = req.body.username;
                 console.dir({username, password});
+                let uniqID = rethink.uuid(username);
+
+                let lastName = '';
+                let firstName = '';
     
-                rethink.table('users').insert({username, password}, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
+                rethink.table('users').insert({username, password, uniqID, lastName, firstName}, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
                     if(err) {
                     return next(err);
                     }
@@ -100,18 +104,21 @@ function loginDataCheck(req, res, next){
             return;
         }
 
+        console.log(user);
         // User doesnt exist
         if (!user) {
-            res.json({message: 'User doenst exist in the db.',
-            statusCode: 400
-        }).status(400).send();
-            return;
+                res.json({
+                    message: 'User doenst exist in the db.',
+                    statusCode: 400,
+                    uniqID: user.uniqID
+            }).status(400).send();
+                return;
         }
         else{
             hashedPW = user.password;
         }
-         
-           
+
+        const uniqID = user.uniqID;
 
     bcrypt.compare(password, hashedPW, (err, areSame) =>{
         if (err) {
@@ -133,12 +140,15 @@ function loginDataCheck(req, res, next){
             res.json({
                 message: 'Correct username and password.',
                 token: token,
-                statusCode: 200
+                statusCode: 200,
+                uniqID: uniqID
             }).status(200).send();
             return;
         }
         else{
-            res.json({message: 'Incorrect username or password, please try again.'}).status(400).send();
+            res.json({
+                message: 'Incorrect username or password, please try again.'
+            }).status(400).send();
             return;
         }
         })

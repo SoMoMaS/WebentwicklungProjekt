@@ -156,14 +156,14 @@ async.waterfall([
     });
 
    
-  },
+  // },
   // function createIndex(connection, callback) {
   //   //Create the index if needed.
   //   rethink.table('users').indexList().contains('username').do(function(hasIndex) {
   //     return rethink.branch(
   //       hasIndex,
   //       {created: 0},
-  //       rethink.table('users').indexCreate('username')
+  //       rethink.table('users').indexCreate('uniqID')
   //     );
   //   }).run(connection, function(err) {
   //     callback(err, connection);
@@ -172,11 +172,11 @@ async.waterfall([
   // },
   // function waitForIndex(connection, callback) {
   //   //Wait for the index to be ready.
-  //   rethink.table('users').indexWait('username').run(connection, function(err, result) {
+  //   rethink.table('users').indexWait('uniqID').run(connection, function(err, result) {
   //     callback(err, connection);
   //   });
    
-  // }
+ }
 ], function(err, connection) {
   if(err) {
     console.error(err);

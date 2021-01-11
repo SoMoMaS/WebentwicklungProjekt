@@ -22,7 +22,11 @@ export class WebRequestService {
   }
 
   put(uri: string, payload: Object){
-    return this.http.put(`${this.root_URL}/${uri}`, payload);
+    console.log(`${this.root_URL}/${uri}`);
+    return this.http.put(`${this.root_URL}/${uri}`, payload).subscribe((response) =>{
+      console.log(response);
+
+    });
   }
   
   // delete later

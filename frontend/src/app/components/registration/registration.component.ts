@@ -31,6 +31,11 @@ errorMessage: String = '';
     var username = this.registerData.username;
     var password = this.registerData.password
     return this.registrationService.createUser({username , password}).subscribe((response: any) =>{
+      console.log(response);
+
+      if(response.statusCode == 400){
+        
+      }
       this.errorMessage = response;
     });
   }

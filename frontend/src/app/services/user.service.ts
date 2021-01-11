@@ -9,7 +9,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts() {
-    return this.http.get<Post[]>('https://jsonplaceholder.typicode.com/posts');
+  updateUserProfile(){
+    
   }
 }

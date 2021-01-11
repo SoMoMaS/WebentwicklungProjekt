@@ -1,0 +1,30 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>Update user data here</mat-card-title>
+      </mat-card-header>
+  
+      <form >
+        <mat-card-content>
+          <!-- <mat-form-field class="example-full-width">
+            <input matInput="text" placeholder="Username" type="text" name="username" [(ngModel)]="user.username">
+          </mat-form-field> -->
+  
+          <mat-form-field class="example-full-width">
+            <input matInput="password" placeholder="Password" type="password" name="password" [(ngModel)]="user.password">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput="text" placeholder="First name" type="text" name="First name" [(ngModel)]="user.firstName">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput="text" placeholder="Last name" type="text" name="Last name" [(ngModel)]="user.lastName">
+          </mat-form-field>
+        </mat-card-content>
+        <button mat-button color="primary"  (click)="onSubmit()" >Submit</button>
+      </form>
+    </mat-card>
+  
+  </div>

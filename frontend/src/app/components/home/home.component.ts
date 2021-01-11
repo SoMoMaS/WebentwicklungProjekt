@@ -1,13 +1,14 @@
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { analyzeAndValidateNgModules, ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PoolLogsService } from 'src/app/services/pool-logs.service';
 import { PoolLog } from '../../models/pool-log';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CreatelogComponent } from '../createlog/createlog.component';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 
 
-// Prime ng style
-import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +18,13 @@ import {MenuItem} from 'primeng/api';
 export class HomeComponent implements OnInit {
 
   poollogs: PoolLog[];
+
+  newPoolLog: PoolLog;
   displayedColumns: string[] = ['date', 'phValue', 'comment', 'backflushInterval','chlorineValue', 'waterTemp', 'airTemp'];
-  constructor(private poolLogsService: PoolLogsService, private router : Router) {
+  constructor(private poolLogsService: PoolLogsService, 
+              private router : Router, 
+              private dialog: MatDialog, 
+              private tokenstorage: TokenStorageService) {
     poolLogsService.getPoolLogs().subscribe((response : any) =>{
 
       if (response.statusCode === 401) {
@@ -31,11 +37,11 @@ export class HomeComponent implements OnInit {
 
 
         this.poollogs = new Array();
-        //this.poollogs = response.poollogs;
         let poolLogObjArr = response.poolLogs;
 
         for (let poolLog of poolLogObjArr) {
-          let newLog = new PoolLog(poolLog.date,
+          
+          let newLog = new PoolLog(new Date(poolLog.date),
                                     poolLog.phValue,
                                     poolLog.comment, 
                                     poolLog.backflushInterval,
@@ -46,6 +52,8 @@ export class HomeComponent implements OnInit {
           this.poollogs.push(newLog);
 
         }
+
+        console.log(this.poollogs);
       }
      
 
@@ -53,6 +61,54 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
+  }
+
+  onSignout(){
+    this.tokenstorage.logOut();
+    this.router.navigate(['/login']);
+  }
+
+  onCreateLogClick(){
+    console.log('Imma gonna create a log');
+    const dialogRef = this.dialog.open(CreatelogComponent, {
+      width: '700px',
+      height:'700px',
+      data: {newLog: this.newPoolLog }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+
+      console.log(result.date);
+      this.newPoolLog = new PoolLog(new Date(result.date), 
+                                    result.phValue, 
+                                    result.comment,
+                                    result.backflushInterval, 
+                                    result.chlorineValue, 
+                                    result.waterTemp, 
+                                    result.airTemp)
+      console.log(this.newPoolLog);
+
+
+      this.createLog(this.newPoolLog);
+      window.location.reload();
+
+    });
+
+   
+  }
+
+  createLog(newPoolLog: PoolLog){
+      this.poolLogsService.createPoolLog(newPoolLog).subscribe((response : any) =>{
+        if (response.statusCode === 401) {
+          console.log('Unathorized.');
+          this.router.navigate(['/login']);
+        }
+        else{
+          console.log(response);
+          this.poollogs.push(response.poollog);
+        }
+      });
   }
 
 
