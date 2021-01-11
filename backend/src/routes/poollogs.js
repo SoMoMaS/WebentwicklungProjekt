@@ -23,11 +23,11 @@ router.get('/', authChecker, (req, res, next) =>{
 })
 
 router.post('/', authChecker,  (req, res, next) =>{
-           createPoolLog(req, res, next);
+        createPoolLog(req, res, next);
 })
 
-router.put('/', authChecker, (req, res, next) =>{
-    updatePoolLogByID(req, res, next, "839be5ab-3ce5-49eb-888a-32c6f26c210f");
+router.put('/:id',authChecker, (req, res, next) =>{
+    updatePoolLogByID(req, res, next, req.body.uniqID);
 })
 
 function listPoolPosts(req, res , next) {
@@ -55,10 +55,13 @@ function listPoolPosts(req, res , next) {
 
 function createPoolLog(req, res, next) {
     var poolLog = req.body;
-    poolLog.cretedAt = rethink.now();
-  
+    //poolLog.cretedAt = rethink.now();
+    //let uniqID = makeid(20);
+    poolLog.uniqID =  makeid(20);
+    //poolLog.uniqID = this.uniqID;
+
+
     console.dir(poolLog);
-  
     rethink.table('poollogs').insert(poolLog, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
       if(err) {
         return next(err);
@@ -70,21 +73,51 @@ function createPoolLog(req, res, next) {
 
 function updatePoolLogByID(req, res, next, id){
 
+    console.log('Got into update pool log');
+    console.log(req.body);
+    console.log(id);
     rethink
     .table('poollogs')
-    .get(id)
+    .filter({ id: id })
     .update(
-        {
-            airTemp: req.body.airTemp,
+        {   
+            comment: req.body.comment,
+            date: req.body.date,
+            phValue: req.body.phValue,
             backflushInterval: req.body.backflushInterval,
             chlorineValue: req.body.chlorineValue,
-            comment: req.body.comment,
-            waterTemp: req.body.waterTemp
-        },)
-    .run(req.app._rdbConn, callback =>{
-        res.json('Update was successful');
+            waterTemp: req.body.waterTemp,
+            airTemp: req.body.airTemp
+        })
+    .run(req.app._rdbConn, (err, result) => {
+        if (err) {
+            res.status(400).send();
+        }
+        else {
+            console.log(result);
+            // update was successful
+            res.status(200).json({
+                message: 'Update was successful',
+                updatedLog: result,
+                statusCode: 200,
+            }).send();
+        }
+
+
     });
+
 }
+
+// source : https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
 
 // export the logs via the router
 module.exports = router;

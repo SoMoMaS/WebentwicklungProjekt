@@ -1,5 +1,6 @@
 import { JSDocComment } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { PoolLog } from '../models/pool-log';
 import { WebRequestService } from './web-request.service';
 
 @Injectable({
@@ -17,7 +18,12 @@ export class PoolLogsService {
     return this.webRequestService.get('poollogs');
   }
 
-  updatePoolLog(updatedLogData: Object){
-    return this.webRequestService.put('poollogs', updatedLogData);
+  updatePoolLog(updatedLogData: PoolLog){
+
+    console.log('Got into the pool log services.');
+    var poollogs = 'poollogs/';
+    var uri = poollogs.concat(updatedLogData.uniqID)
+    console.log(uri);
+    return this.webRequestService.put(uri, updatedLogData);
   }
 }

@@ -1,6 +1,6 @@
 export class PoolLog {
 
-
+    uniqID: string;
     date : any;
     phValue : number;
     comment : string;
@@ -14,7 +14,8 @@ export class PoolLog {
                  backflushInterval: number, 
                  chlorineValue : number, 
                  waterTemp : number, 
-                 airTemp: number){
+                 airTemp: number
+                 ){
 
                     
             this.date = date.toLocaleDateString();

@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Create pool log</h1>
-<div mat-dialog-content class="CreateLog">
+<h1 mat-dialog-title>Modify pool log</h1>
+<div mat-dialog-content class="ModifyLog">
   <p>Plese fill out the fields</p>
   <mat-form-field appearance="fill">
     <mat-label>Date</mat-label>
@@ -46,7 +46,7 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onCloseTabButttonClick()">Exit</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial >Create</button>
+  <!-- <button mat-button (click)="onCloseTabButttonClick()">Exit</button> -->
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Modify</button>
 </div>
 

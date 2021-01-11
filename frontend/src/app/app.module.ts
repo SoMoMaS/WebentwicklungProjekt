@@ -37,6 +37,7 @@ import { MatToolbarModule,
          MatOptionModule,
          MatNativeDateModule} from '@angular/material';
 import { ProfileComponent } from './components/profile/profile.component';
+import { LogmodificationComponent } from './components/logmodification/logmodification.component';
 
 
 
@@ -54,7 +55,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     RegistrationComponent,
     HomeComponent,
     CreatelogComponent,
-    ProfileComponent
+    ProfileComponent,
+    LogmodificationComponent
   ],
   imports: [
     BrowserModule,
