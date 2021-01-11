@@ -6,7 +6,6 @@ import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   { path: 'home', component : HomeComponent },
