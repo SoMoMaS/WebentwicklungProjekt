@@ -34,7 +34,8 @@ import { MatToolbarModule,
          MatSlideToggleModule,
          MatSelectModule,
          MatOptionModule,
-         MatNativeDateModule} from '@angular/material';
+         MatNativeDateModule,
+         MatSortModule} from '@angular/material';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LogmodificationComponent } from './components/logmodification/logmodification.component';
 
@@ -83,7 +84,10 @@ import { LogmodificationComponent } from './components/logmodification/logmodifi
     MatProgressSpinnerModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule 
+    MatNativeDateModule,
+    BrowserModule,
+    MatTableModule,
+    MatSortModule
 
 
   ],

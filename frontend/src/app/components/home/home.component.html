@@ -6,11 +6,10 @@
   </span>
 </mat-toolbar>
 
-
 <button mat-raised-button (click)="onCreateLogClick()" mat-button color="primary">+Create log</button>
 
 
-<table mat-table [dataSource]="poollogs" matSort class="mat-elevation-z8">
+<table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
 
   <!-- Date Column -->
   <ng-container matColumnDef="date">

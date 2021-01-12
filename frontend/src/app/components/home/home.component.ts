@@ -7,9 +7,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CreatelogComponent } from '../createlog/createlog.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LogmodificationComponent } from '../logmodification/logmodification.component';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
-import { PrintHook } from '@angular/flex-layout';
+//import { PrintHook } from '@angular/flex-layout';
 
 
 
@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dialog: MatDialog,
     private tokenstorage: TokenStorageService) {
+    
 
     console.log(this.tokenstorage.getToken())
     if (this.tokenstorage.getToken() === null) {
@@ -40,16 +41,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    poolLogsService.getPoolLogs().subscribe((response: any) => {
+    
+  }
+
+  getLogs(){
+    this.poolLogsService.getPoolLogs().subscribe((response: any) => {
 
       if (response.statusCode === 401) {
         console.log('Unathorized.');
-        router.navigate(['/login']);
+        this.router.navigate(['/login']);
         // Rerouting
 
       }
       else {
-
 
         this.poollogs = [];
         let poolLogObjArr = response.poolLogs;
@@ -71,23 +75,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         }
 
-        console.log(this.poollogs);
+        this.datasource = new MatTableDataSource(this.poollogs);
+        this.datasource.sort = this.sort;
       }
-
-      this.datasource = new MatTableDataSource(this.poollogs);
-
-
     });
   }
 
-  
+
 
   ngOnInit(): void {
+    this.getLogs();
   }
 
   ngAfterViewInit() {
     this.datasource = new MatTableDataSource(this.poollogs);
     this.datasource.sort = this.sort;
+    //this.poollogs = this.datasource.data;
   }
 
   onSignout() {
@@ -124,9 +127,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onDeleteLogClicked(logToDelete: PoolLog){
-      this.poolLogsService.deletePoolLog(logToDelete);
-      window.location.reload();
+  onDeleteLogClicked(logToDelete: PoolLog) {
+    this.poolLogsService.deletePoolLog(logToDelete);
+    window.location.reload();
   }
 
 
