@@ -1,5 +1,5 @@
 import { analyzeAndValidateNgModules, ThisReceiver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PoolLogsService } from 'src/app/services/pool-logs.service';
 import { PoolLog } from '../../models/pool-log';
@@ -7,7 +7,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CreatelogComponent } from '../createlog/createlog.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LogmodificationComponent } from '../logmodification/logmodification.component';
-
+import {MatSort} from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material';
+import { PrintHook } from '@angular/flex-layout';
 
 
 
@@ -16,10 +18,14 @@ import { LogmodificationComponent } from '../logmodification/logmodification.com
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+
+
+export class HomeComponent implements OnInit, AfterViewInit {
+
+  @ViewChild(MatSort) sort: MatSort;
 
   poollogs: PoolLog[];
-
+  datasource: MatTableDataSource<PoolLog>;
   newPoolLog: PoolLog;
   displayedColumns: string[] = ['date', 'phValue', 'comment', 'backflushInterval', 'chlorineValue', 'waterTemp', 'airTemp', 'modify', 'delete'];
   constructor(private poolLogsService: PoolLogsService,
@@ -68,11 +74,20 @@ export class HomeComponent implements OnInit {
         console.log(this.poollogs);
       }
 
+      this.datasource = new MatTableDataSource(this.poollogs);
+
 
     });
   }
 
+  
+
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    this.datasource = new MatTableDataSource(this.poollogs);
+    this.datasource.sort = this.sort;
   }
 
   onSignout() {

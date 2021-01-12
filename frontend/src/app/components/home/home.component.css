@@ -11,6 +11,10 @@ table {
   background-color:#ffffff;
 }
 
+th.mat-sort-header-sorted {
+  color: black;
+}
+
 
 .button {
   padding: 20px;
