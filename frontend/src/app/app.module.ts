@@ -39,6 +39,10 @@ import { MatToolbarModule,
 import { ProfileComponent } from './components/profile/profile.component';
 import { LogmodificationComponent } from './components/logmodification/logmodification.component';
 
+// Charts
+import { ChartsModule } from 'ng2-charts';
+import { ChartsComponent } from './components/charts/charts.component';
+
 
 
 
@@ -55,7 +59,8 @@ import { LogmodificationComponent } from './components/logmodification/logmodifi
     HomeComponent,
     CreatelogComponent,
     ProfileComponent,
-    LogmodificationComponent
+    LogmodificationComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +92,8 @@ import { LogmodificationComponent } from './components/logmodification/logmodifi
     MatNativeDateModule,
     BrowserModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    ChartsModule
 
 
   ],

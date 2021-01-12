@@ -9,7 +9,15 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LogmodificationComponent } from '../logmodification/logmodification.component';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
-//import { PrintHook } from '@angular/flex-layout';
+import { ChartFactoryService } from 'src/app/services/chart-factory.service';
+import { ChartData } from 'src/app/models/chart-data';
+
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+
+
+
+import { Label } from 'ng2-charts';
+import { Observable } from 'rxjs';
 
 
 
@@ -24,6 +32,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
+  /*
+   Chart testing
+  */
+  options: ChartOptions;
+  type: ChartType;
+  legend: boolean;
+  labels: Label[];
+  dataSet: ChartDataSets[];
+
+
+
+  chartData: ChartData
   poollogs: PoolLog[];
   datasource: MatTableDataSource<PoolLog>;
   newPoolLog: PoolLog;
@@ -32,19 +52,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dialog: MatDialog,
     private tokenstorage: TokenStorageService) {
-    
 
-    console.log(this.tokenstorage.getToken())
+
     if (this.tokenstorage.getToken() === null) {
       console.log('Unathorized.');
       router.navigate(['/login']);
     }
 
-
-    
+   
   }
 
-  getLogs(){
+  getLogs(): Observable<any> {
     this.poolLogsService.getPoolLogs().subscribe((response: any) => {
 
       if (response.statusCode === 401) {
@@ -58,7 +76,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.poollogs = [];
         let poolLogObjArr = response.poolLogs;
 
-        console.log(poolLogObjArr);
 
         for (let poolLog of poolLogObjArr) {
 
@@ -72,13 +89,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
           newLog.uniqID = poolLog.id;
 
           this.poollogs.push(newLog);
+          console.log(newLog);
 
         }
 
         this.datasource = new MatTableDataSource(this.poollogs);
         this.datasource.sort = this.sort;
       }
+
+      
     });
+    return;
+    // console.log('Logs after initialization');
+    // console.log(this.datasource);
+
   }
 
 
@@ -88,10 +112,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+   
+
     this.datasource = new MatTableDataSource(this.poollogs);
     this.datasource.sort = this.sort;
     //this.poollogs = this.datasource.data;
   }
+
+  
 
   onSignout() {
     this.tokenstorage.logOut();
@@ -105,12 +133,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       data: { newLog: this.newPoolLog }
     });
 
-
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
 
-      console.log(result.date);
       this.newPoolLog = new PoolLog(new Date(result.date),
         result.phValue,
         result.comment,
@@ -118,7 +142,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         result.chlorineValue,
         result.waterTemp,
         result.airTemp)
-      console.log(this.newPoolLog);
 
 
       this.createLog(this.newPoolLog);
@@ -135,8 +158,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   onModifyLogClicked(currentLog: PoolLog) {
 
-    console.log('Got into the modify click events method. printing current log begore modification');
-    console.log(currentLog);
     const dialogRef = this.dialog.open(LogmodificationComponent, {
       width: '700px',
       height: '700px',
@@ -144,8 +165,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-
       currentLog.date = new Date(result.date).toLocaleDateString();
       currentLog.phValue = result.phValue;
       currentLog.comment = result.comment;
@@ -153,10 +172,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       currentLog.chlorineValue = result.chlorineValue;
       currentLog.waterTemp = result.waterTemp;
       currentLog.airTemp = result.airTemp;
-
-      console.log(' After modif');
-      console.log(currentLog);
-
 
       this.modifyLog(currentLog);
       //window.location.reload();
@@ -178,9 +193,63 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   modifyLog(modifiedLog: PoolLog) {
-
-    console.log('Got the modified poollog. About to call the update log from the home component.')
     this.poolLogsService.updatePoolLog(modifiedLog)
+  }
+
+
+
+  getChart() {
+
+    // Options
+    this.options = {
+      responsive: true,
+      scales: { xAxes: [{}], yAxes: [{}] },
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+        }
+      }
+    }
+
+    // Chart type
+    this.type = 'bar' as ChartType;
+
+
+    // legend
+    this.legend = true;
+
+    this.labels = new Array();
+    //chartData = new Array();
+
+    // dataset
+    var phValues = new Array();
+    var chlorineValues = new Array();
+    var airTemps = new Array();
+    var waterTemps = new Array();
+    var backWashDurations = new Array();
+
+
+
+    for (let value of this.poollogs) {
+      this.labels.push(value.date);
+      phValues.push(value.phValue);
+      chlorineValues.push(value.chlorineValue);
+      airTemps.push(value.airTemp);
+      waterTemps.push(value.waterTemp);
+      backWashDurations.push(value.backflushInterval);
+    }
+
+    this.dataSet = [
+        {data: phValues, label: 'PH'}, 
+        {data: chlorineValues, label: 'Chlorine'}, 
+        {data: airTemps, label: 'Air temperature'}, 
+        {data: waterTemps, label: 'Water temperature'}, 
+        {data: backWashDurations, label: 'Backwash duration'}
+    ]
+
+    //let chart = new ChartData(options, barChartType, chartLegend, labels, chartDataSet)
+    //return chart;
   }
 
 

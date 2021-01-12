@@ -72,3 +72,21 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
 </table>
+
+<br/>
+
+<button mat-raised-button (click)="getChart()" mat-stroked-button color="primary"> Get chart</button>
+
+<div>
+  <div>
+    <div style="display: block" >
+      <canvas baseChart
+        [datasets]="dataSet"
+        [labels]="labels"
+        [options]="options"
+        [legend]="legend"
+        [chartType]="type">
+      </canvas>
+    </div>
+  </div>
+</div>
