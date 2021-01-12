@@ -17,18 +17,21 @@ export class WebRequestService {
   }
 
   post(uri: string, payload: Object){
-    console.log(`${this.root_URL}/${uri}`);
     return this.http.post(`${this.root_URL}/${uri}`, payload);
   }
 
   put(uri: string, payload: Object){
-    console.log(`${this.root_URL}/${uri}`);
     return this.http.put(`${this.root_URL}/${uri}`, payload).subscribe((response) =>{
       console.log(response);
-
     });
   }
-  
-  // delete later
+
+  delete(uri: string, payload: Object){
+    console.log('payload from webreq ser');
+    console.log(payload);
+    return this.http.delete(`${this.root_URL}/${uri}`, payload).subscribe((response) =>{
+      console.log(response);
+    });
+  }
 
 }

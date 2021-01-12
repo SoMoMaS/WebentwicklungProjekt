@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   poollogs: PoolLog[];
 
   newPoolLog: PoolLog;
-  displayedColumns: string[] = ['date', 'phValue', 'comment', 'backflushInterval', 'chlorineValue', 'waterTemp', 'airTemp', 'modify'];
+  displayedColumns: string[] = ['date', 'phValue', 'comment', 'backflushInterval', 'chlorineValue', 'waterTemp', 'airTemp', 'modify', 'delete'];
   constructor(private poolLogsService: PoolLogsService,
     private router: Router,
     private dialog: MatDialog,
@@ -109,6 +109,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onDeleteLogClicked(logToDelete: PoolLog){
+      this.poolLogsService.deletePoolLog(logToDelete);
+      window.location.reload();
+  }
+
+
   onModifyLogClicked(currentLog: PoolLog) {
 
     console.log('Got into the modify click events method. printing current log begore modification');
@@ -157,11 +163,6 @@ export class HomeComponent implements OnInit {
 
     console.log('Got the modified poollog. About to call the update log from the home component.')
     this.poolLogsService.updatePoolLog(modifiedLog)
-
-    // .subscribe((response : any) =>{
-
-
-    // })
   }
 
 

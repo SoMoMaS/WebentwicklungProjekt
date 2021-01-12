@@ -27,7 +27,12 @@ router.post('/', authChecker,  (req, res, next) =>{
 })
 
 router.put('/:id',authChecker, (req, res, next) =>{
+    console.log(req.body.uniqID);
     updatePoolLogByID(req, res, next, req.body.uniqID);
+})
+
+router.delete('/:id', authChecker, (req, res, next) =>{
+    deletePoolLogByID(req, res, next, req.params.id);
 })
 
 function listPoolPosts(req, res , next) {
@@ -55,12 +60,7 @@ function listPoolPosts(req, res , next) {
 
 function createPoolLog(req, res, next) {
     var poolLog = req.body;
-    //poolLog.cretedAt = rethink.now();
-    //let uniqID = makeid(20);
     poolLog.uniqID =  makeid(20);
-    //poolLog.uniqID = this.uniqID;
-
-
     console.dir(poolLog);
     rethink.table('poollogs').insert(poolLog, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
       if(err) {
@@ -71,11 +71,35 @@ function createPoolLog(req, res, next) {
     });
 }
 
+function deletePoolLogByID(req, res, next, id){
+
+    console.log('Got into the deleted log method in backend. ID:');
+    console.log(id);
+    rethink
+    .table('poollogs')
+    .filter({ id: id })
+    .delete()
+    .run(req.app._rdbConn, (err, result) => {
+        if (err) {
+            res.status(400).send();
+        }
+        else {
+            console.log(result);
+            // delete was successful
+            res.status(200).json({
+                message: 'Delete was successful',
+                deletedLog: result,
+                statusCode: 200,
+            }).send();
+        }
+
+
+    });
+
+}
+
 function updatePoolLogByID(req, res, next, id){
 
-    console.log('Got into update pool log');
-    console.log(req.body);
-    console.log(id);
     rethink
     .table('poollogs')
     .filter({ id: id })

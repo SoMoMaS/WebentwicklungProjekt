@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { version } from '.../../package.json';
 
 @Component({
   selector: 'app-about',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
 
-  constructor() { }
+  public version : string = version;
+  constructor() {
+    
+   }
 
   ngOnInit(): void {
   }

@@ -26,4 +26,14 @@ export class PoolLogsService {
     console.log(uri);
     return this.webRequestService.put(uri, updatedLogData);
   }
+
+  deletePoolLog(deletedLogData: PoolLog){
+
+    var poollogs = 'poollogs/';
+    var uri = poollogs.concat(deletedLogData.uniqID)
+    console.log(uri);
+    return this.webRequestService.delete(uri, deletedLogData);
+  }
+
+
 }
