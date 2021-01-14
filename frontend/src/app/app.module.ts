@@ -14,7 +14,6 @@ import { HomeComponent } from './components/home/home.component';
 import { CreatelogComponent } from './components/createlog/createlog.component';
 
 import { AuthentificationHelperInterceptor } from './helpers/authentification-helper.interceptor';
-//import * as  AuthentificationHelper from './helpers/authentification-helper.interceptor';
 
 // Style imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +37,7 @@ import { MatToolbarModule,
          MatSortModule} from '@angular/material';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LogmodificationComponent } from './components/logmodification/logmodification.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 // Charts
 import { ChartsModule } from 'ng2-charts';
@@ -93,7 +93,8 @@ import { ChartsComponent } from './components/charts/charts.component';
     BrowserModule,
     MatTableModule,
     MatSortModule,
-    ChartsModule
+    ChartsModule,
+    MatSnackBarModule
 
 
   ],

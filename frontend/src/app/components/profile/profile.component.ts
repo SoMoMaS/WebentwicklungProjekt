@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/services/profile.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { User } from '../../models/user';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService : 
     ProfileService, private tokenStorage: 
-    TokenStorageService, private router: Router) {
+    TokenStorageService, private router: Router,
+    private snackBar: MatSnackBar) {
     this.user = new User();
    }
 
@@ -30,12 +32,13 @@ export class ProfileComponent implements OnInit {
 
   onSubmit(){
 
-
     var uniqUserID = this.tokenStorage.getUser();
     this.user.uniqID = uniqUserID;
 
-    console.log(this.user);
     this.profileService.updateUserData(this.user);
+    this.snackBar.open('Profil data updated.', '',{
+      duration: 2000,
+    });
     this.router.navigate(['/home']);
   }
 

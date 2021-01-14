@@ -118,7 +118,7 @@ function updatePoolLogByID(req, res, next, id){
             res.status(400).send();
         }
         else {
-            console.log(result);
+            console.log(req.body);
             // update was successful
             res.status(200).json({
                 message: 'Update was successful',

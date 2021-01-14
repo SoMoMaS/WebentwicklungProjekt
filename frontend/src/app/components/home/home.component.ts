@@ -9,12 +9,9 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LogmodificationComponent } from '../logmodification/logmodification.component';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
-import { ChartFactoryService } from 'src/app/services/chart-factory.service';
 import { ChartData } from 'src/app/models/chart-data';
-
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-
-
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import { Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
@@ -51,11 +48,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private poolLogsService: PoolLogsService,
     private router: Router,
     private dialog: MatDialog,
-    private tokenstorage: TokenStorageService) {
+    private tokenstorage: TokenStorageService,
+    private snackBar : MatSnackBar) {
 
 
     if (this.tokenstorage.getToken() === null) {
       console.log('Unathorized.');
+      this.snackBar.open('Unathorized', '',{
+        duration: 2000,
+      });
       router.navigate(['/login']);
     }
 
@@ -66,6 +67,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.poolLogsService.getPoolLogs().subscribe((response: any) => {
 
       if (response.statusCode === 401) {
+        this.snackBar.open('Unathorized', '',{
+          duration: 2000,
+        });
         console.log('Unathorized.');
         this.router.navigate(['/login']);
         // Rerouting
@@ -89,7 +93,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
           newLog.uniqID = poolLog.id;
 
           this.poollogs.push(newLog);
-          console.log(newLog);
 
         }
 
@@ -100,9 +103,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       
     });
     return;
-    // console.log('Logs after initialization');
-    // console.log(this.datasource);
-
   }
 
 
@@ -116,13 +116,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.datasource = new MatTableDataSource(this.poollogs);
     this.datasource.sort = this.sort;
-    //this.poollogs = this.datasource.data;
   }
 
   
 
   onSignout() {
     this.tokenstorage.logOut();
+    this.snackBar.open('Your logged out', '',{
+      duration: 2000,
+    });
     this.router.navigate(['/login']);
   }
 
@@ -145,14 +147,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
       this.createLog(this.newPoolLog);
+     
       window.location.reload();
-
+      this.snackBar.open('Log created', '',{
+        duration: 2000,
+      });
     });
   }
 
   onDeleteLogClicked(logToDelete: PoolLog) {
     this.poolLogsService.deletePoolLog(logToDelete);
     window.location.reload();
+    this.snackBar.open('Log deleted.', '',{
+      duration: 3000,
+    });
   }
 
 
@@ -175,6 +183,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.modifyLog(currentLog);
       //window.location.reload();
+      this.snackBar.open('Log modified', '',{
+        duration: 2000,
+      });
 
     });
   }

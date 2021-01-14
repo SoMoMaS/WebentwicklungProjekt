@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,7 +20,11 @@ export class LoginComponent implements OnInit {
   errorMessage: String = '';
   
 
-  constructor(private loginService : LoginService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(
+            private loginService : LoginService, 
+            private tokenStorage: TokenStorageService, 
+            private router: Router,
+            private snackBar : MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -33,6 +39,9 @@ export class LoginComponent implements OnInit {
         console.log(response);
 
         if(response.statusCode === 200){
+            this.snackBar.open('Login sucessful','', {
+              duration: 2000,
+            });
             this.tokenStorage.saveToken(response.token);
             this.tokenStorage.saveUser(response.uniqID);
             this.router.navigate(['/home']);

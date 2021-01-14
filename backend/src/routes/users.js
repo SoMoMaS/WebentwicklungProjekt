@@ -34,6 +34,9 @@ function updateUserByID(req, res, next, id) {
             console.log(err);
         }
 
+        console.log(req.body.firstName);
+        console.log(req.body.lastName);
+
         rethink
             .table('users')
             .filter({ uniqID: id })
@@ -48,7 +51,7 @@ function updateUserByID(req, res, next, id) {
                     res.status(400).send();
                 }
                 else {
-                    console.log(result);
+                    console.log(req.body);
                     // update was successful
                     res.status(200).json({
                         message: 'Update was successful',
@@ -59,9 +62,6 @@ function updateUserByID(req, res, next, id) {
 
 
             });
-
-
-
 
 
     })
