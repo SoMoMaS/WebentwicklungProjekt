@@ -9,7 +9,6 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LogmodificationComponent } from '../logmodification/logmodification.component';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
-import { ChartData } from 'src/app/models/chart-data';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -29,9 +28,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  /*
-   Chart testing
-  */
   options: ChartOptions;
   type: ChartType;
   legend: boolean;
@@ -40,7 +36,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
 
-  chartData: ChartData
   poollogs: PoolLog[];
   datasource: MatTableDataSource<PoolLog>;
   newPoolLog: PoolLog;

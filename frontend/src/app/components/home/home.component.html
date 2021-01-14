@@ -1,92 +1,96 @@
-<mat-toolbar color="primary" class="app-header">
-  <span class="nav-tool-items">
-    <a mat-button mat-raised-button (click)="onSignout()">Sign out</a>
-    <a mat-button mat-raised-button routerLink="/profile" routerLinkActive="active">Profile</a>
-    <a mat-button mat-raised-button routerLink="/about" routerLinkActive="active">About</a>
-  </span>
-</mat-toolbar>
-
-<button mat-raised-button (click)="onCreateLogClick()" mat-button color="primary">+Create log</button>
-
-
-<table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
-
-  <!-- Date Column -->
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-  </ng-container>
-
-  <!-- phValue Column -->
-  <ng-container matColumnDef="phValue">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> PH value </th>
-    <td mat-cell *matCellDef="let element"> {{element.phValue}} </td>
-  </ng-container>
-
-  <!-- comment Column -->
-  <ng-container matColumnDef="comment">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
-    <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
-  </ng-container>
-
-  <!-- backflushInterval Column -->
-  <ng-container matColumnDef="backflushInterval">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Backwash duration </th>
-    <td mat-cell *matCellDef="let element"> {{element.backflushInterval}} </td>
-  </ng-container>
-
-  <!-- chlorineValue Column -->
-  <ng-container matColumnDef="chlorineValue">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Chlorine value </th>
-    <td mat-cell *matCellDef="let element"> {{element.chlorineValue}} </td>
-  </ng-container>
-
-  <!-- waterTemp Column -->
-  <ng-container matColumnDef="waterTemp">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Water temp </th>
-    <td mat-cell *matCellDef="let element"> {{element.waterTemp}} </td>
-  </ng-container>
-
-  <!-- airTemp Column -->
-  <ng-container matColumnDef="airTemp">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Air temp </th>
-    <td mat-cell *matCellDef="let element"> {{element.airTemp}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="modify">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Modify </th>
-    <td mat-cell *matCellDef="let element"> 
-      <button mat-raised-button (click)="onModifyLogClicked(element)" mat-stroked-button color="primary">Modify</button>
-
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="delete">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
-    <td mat-cell *matCellDef="let element"> 
-      <button mat-raised-button (click)="onDeleteLogClicked(element)" mat-flat-button color="warn">Delete</button>
-
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
-</table>
-
-<br/>
-
-<button mat-raised-button (click)="getChart()" mat-stroked-button color="primary"> Get chart</button>
-
-<div>
+<div class="mat-app-background">
+  <mat-toolbar color="primary" class="app-header">
+    <span class="nav-tool-items">
+      <a mat-button mat-raised-button (click)="onSignout()">Sign out</a>
+      <a mat-button mat-raised-button routerLink="/profile" routerLinkActive="active">Profile</a>
+      <a mat-button mat-raised-button routerLink="/about" routerLinkActive="active">About</a>
+    </span>
+  </mat-toolbar>
+  
+  <button mat-raised-button (click)="onCreateLogClick()" mat-button color="primary">+Create log</button>
+  
+  
+  <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8">
+  
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+    </ng-container>
+  
+    <!-- phValue Column -->
+    <ng-container matColumnDef="phValue">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> PH value </th>
+      <td mat-cell *matCellDef="let element"> {{element.phValue}} </td>
+    </ng-container>
+  
+    <!-- comment Column -->
+    <ng-container matColumnDef="comment">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
+      <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+    </ng-container>
+  
+    <!-- backflushInterval Column -->
+    <ng-container matColumnDef="backflushInterval">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Backwash duration </th>
+      <td mat-cell *matCellDef="let element"> {{element.backflushInterval}} </td>
+    </ng-container>
+  
+    <!-- chlorineValue Column -->
+    <ng-container matColumnDef="chlorineValue">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Chlorine value </th>
+      <td mat-cell *matCellDef="let element"> {{element.chlorineValue}} </td>
+    </ng-container>
+  
+    <!-- waterTemp Column -->
+    <ng-container matColumnDef="waterTemp">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Water temp </th>
+      <td mat-cell *matCellDef="let element"> {{element.waterTemp}} </td>
+    </ng-container>
+  
+    <!-- airTemp Column -->
+    <ng-container matColumnDef="airTemp">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Air temp </th>
+      <td mat-cell *matCellDef="let element"> {{element.airTemp}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="modify">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Modify </th>
+      <td mat-cell *matCellDef="let element"> 
+        <button mat-raised-button (click)="onModifyLogClicked(element)" mat-stroked-button color="primary">Modify</button>
+  
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+      <td mat-cell *matCellDef="let element"> 
+        <button mat-raised-button (click)="onDeleteLogClicked(element)" mat-flat-button color="warn">Delete</button>
+  
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
+  </table>
+  
+  <br/>
+  
+  <button mat-raised-button (click)="getChart()" mat-stroked-button color="primary"> Get chart</button>
+  
   <div>
-    <div style="display: block" >
-      <canvas baseChart
-        [datasets]="dataSet"
-        [labels]="labels"
-        [options]="options"
-        [legend]="legend"
-        [chartType]="type">
-      </canvas>
+    <div>
+      <div style="display: block" >
+        <canvas baseChart
+          [datasets]="dataSet"
+          [labels]="labels"
+          [options]="options"
+          [legend]="legend"
+          [chartType]="type">
+        </canvas>
+      </div>
     </div>
   </div>
 </div>
+
+
